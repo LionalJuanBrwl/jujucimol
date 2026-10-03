@@ -26,18 +26,25 @@ Pengguna mengunggah foto, PDF, atau mengetik isi surat. NgertiBareng menampilkan
 
 Seorang nenek menerima surat tunggakan iuran BPJS. Surat difoto dan diunggah, lalu aplikasi menjelaskan maksudnya dalam Bahasa Jawa dan memberi langkah konkret yang harus dilakukan.
 
+![Tampilan aplikasi NgertiBareng](bukti/Aplikasi.png)
+
+![Hasil penjelasan surat BPJS dalam Bahasa Jawa](bukti/hasil-bpjs.png)
+
 ## Arsitektur
 
+```text
 Pengguna (foto / PDF / teks)
-|
+        |
 Aplikasi Streamlit (app.py, prompt.py)
-|
-+-- Teks dan PDF --> IBM Langflow (Chat Input -> Agent Gemini -> Chat Output)
-|
-+-- Foto dan tanya jawab lanjutan --> Gemini API (langsung)
-|
+        |
+        +-- Teks dan PDF --> IBM Langflow (Chat Input -> Agent Gemini -> Chat Output)
+        |
+        +-- Foto dan tanya jawab lanjutan --> Gemini API (langsung)
+        |
 Hasil terstruktur (JSON) --> tampilan Jawa + Indonesia + checklist
+```
 
+![Flow di IBM Langflow](bukti/Langflow.png)
 
 ## Peran IBM Langflow
 
@@ -47,7 +54,10 @@ Langflow adalah lapisan orkestrasi AI. Flow **Chat Input -> Agent -> Chat Output
 
 IBM Bob dipakai pada **tahap pengembangan** (bukan saat aplikasi berjalan) untuk meninjau proyek dalam mode Plan: meringkas arsitektur dan menyusun daftar risiko (keamanan, kegagalan koneksi, akurasi). File `.env` dipindahkan keluar folder selama sesi dan Bob diminta tidak membacanya.
 
-**Temuan Bob dan tindak lanjut:** [ISI: tulis 2-3 temuan nyata dari sesi Bob, lalu hapus tanda kurung ini]
+**Temuan Bob dan tindak lanjut:**
+
+- [temuan 1 dari sesi Bob] -> [tindak lanjut]
+- [temuan 2 dari sesi Bob] -> [tindak lanjut]
 
 ## Menjalankan secara lokal
 
@@ -58,7 +68,7 @@ IBM Bob dipakai pada **tahap pengembangan** (bukan saat aplikasi berjalan) untuk
 
 ## Pengujian otomatis
 
-`test_ngertibareng.py` (pytest) memanggil flow Langflow dan memeriksa: respons berformat JSON, fakta penting (nominal dan batas waktu), tidak ada angka Rupiah karangan, keberadaan Bahasa Jawa dan terjemahan Indonesia, daftar langkah tindakan, kunci API tidak bocor, tanya jawab lanjutan, serta penanganan input kosong.
+`test_ngertibareng.py` (pytest) memanggil flow Langflow dan memeriksa: respons berformat JSON, fakta penting (nominal dan batas waktu), tidak ada angka Rupiah karangan, keberadaan Bahasa Jawa dan terjemahan Indonesia, daftar langkah tindakan, kunci API tidak bocor, tanya jawab lanjutan, serta penanganan input kosong. Tes yang gagal karena kuota Gemini habis (error 429) ditandai *skipped*, bukan gagal.
 
 Jalankan: `python -m pytest test_ngertibareng.py -v`
 
@@ -71,4 +81,7 @@ Jalankan: `python -m pytest test_ngertibareng.py -v`
 
 ## Tim
 
-jujucimol - [ISI: nama anggota]
+**jujucimol**
+
+- Lional Juan
+- Ahmad Zaidan Restu
